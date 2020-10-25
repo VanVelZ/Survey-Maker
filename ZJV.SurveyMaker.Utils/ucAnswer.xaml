@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="ZJV.SurveyMaker.Utils.ucAnswer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ZJV.SurveyMaker.Utils"
+             mc:Ignorable="d" Width="189.333" Height="45.333">
+
+    <Canvas>
+        <RadioButton GroupName="correct" x:Name="rdoIsCorrect" Content="" HorizontalAlignment="Left" Margin="5,14,0,0" VerticalAlignment="Top" Height="14" Width="16" Checked="rdoIsCorrect_Checked" Unchecked="rdoIsCorrect_Unchecked"/>
+        <ComboBox x:Name="cboAnswers" HorizontalAlignment="Left" Margin="33,9,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectionChanged="cboAnswers_SelectionChanged"/>
+        <Button HorizontalAlignment="Left" Margin="160,10,0,0" VerticalAlignment="Top" Width="25" Height="21" Click="Button_Click">
+            <Image x:Name="btnDelete" Source="img/trash.png"/>
+        </Button>
+    </Canvas>
+</UserControl>

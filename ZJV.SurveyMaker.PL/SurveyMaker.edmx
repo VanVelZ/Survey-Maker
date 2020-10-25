@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ZJV.SurveyMaker.DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblActivation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" Nullable="false" />
+          <Property Name="ActivationCode" Type="nvarchar" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Answer" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblQuestion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Question" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblQuestionAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AnswerId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsCorrect" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblResponse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AnswerId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ResponseDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="Activation_Question">
+          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="1" />
+          <End Role="tblActivation" Type="Self.tblActivation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblActivation">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Response_Answer">
+          <End Role="tblAnswer" Type="Self.tblAnswer" Multiplicity="1" />
+          <End Role="tblResponse" Type="Self.tblResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblResponse">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Response_Question">
+          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="1" />
+          <End Role="tblResponse" Type="Self.tblResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblResponse">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblQuestionAnswer_AnswerId">
+          <End Role="tblAnswer" Type="Self.tblAnswer" Multiplicity="1" />
+          <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuestionAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblQuestionAnswer_QuestionId">
+          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="1" />
+          <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuestionAnswer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZJVSurveyMakerDBModelStoreContainer">
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblActivation" EntityType="Self.tblActivation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblAnswer" EntityType="Self.tblAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuestion" EntityType="Self.tblQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblQuestionAnswer" EntityType="Self.tblQuestionAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblResponse" EntityType="Self.tblResponse" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Activation_Question" Association="Self.Activation_Question">
+            <End Role="tblQuestion" EntitySet="tblQuestion" />
+            <End Role="tblActivation" EntitySet="tblActivation" />
+          </AssociationSet>
+          <AssociationSet Name="Response_Answer" Association="Self.Response_Answer">
+            <End Role="tblAnswer" EntitySet="tblAnswer" />
+            <End Role="tblResponse" EntitySet="tblResponse" />
+          </AssociationSet>
+          <AssociationSet Name="Response_Question" Association="Self.Response_Question">
+            <End Role="tblQuestion" EntitySet="tblQuestion" />
+            <End Role="tblResponse" EntitySet="tblResponse" />
+          </AssociationSet>
+          <AssociationSet Name="tblQuestionAnswer_AnswerId" Association="Self.tblQuestionAnswer_AnswerId">
+            <End Role="tblAnswer" EntitySet="tblAnswer" />
+            <End Role="tblQuestionAnswer" EntitySet="tblQuestionAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="tblQuestionAnswer_QuestionId" Association="Self.tblQuestionAnswer_QuestionId">
+            <End Role="tblQuestion" EntitySet="tblQuestion" />
+            <End Role="tblQuestionAnswer" EntitySet="tblQuestionAnswer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ZJV.SurveyMaker.DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Answer" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblQuestionAnswers" Relationship="Self.tblQuestionAnswer_AnswerId" FromRole="tblAnswer" ToRole="tblQuestionAnswer" />
+          <NavigationProperty Name="tblResponses" Relationship="ZJV.SurveyMaker.DBModel.Response_Answer" FromRole="tblAnswer" ToRole="tblResponse" />
+        </EntityType>
+        <EntityType Name="tblQuestion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Question" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblQuestionAnswers" Relationship="Self.tblQuestionAnswer_QuestionId" FromRole="tblQuestion" ToRole="tblQuestionAnswer" />
+          <NavigationProperty Name="tblActivations" Relationship="ZJV.SurveyMaker.DBModel.Activation_Question" FromRole="tblQuestion" ToRole="tblActivation" />
+          <NavigationProperty Name="tblResponses" Relationship="ZJV.SurveyMaker.DBModel.Response_Question" FromRole="tblQuestion" ToRole="tblResponse" />
+        </EntityType>
+        <EntityType Name="tblQuestionAnswer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="AnswerId" Type="Guid" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <Property Name="IsCorrect" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblAnswer" Relationship="Self.tblQuestionAnswer_AnswerId" FromRole="tblQuestionAnswer" ToRole="tblAnswer" />
+          <NavigationProperty Name="tblQuestion" Relationship="Self.tblQuestionAnswer_QuestionId" FromRole="tblQuestionAnswer" ToRole="tblQuestion" />
+        </EntityType>
+        <Association Name="tblQuestionAnswer_AnswerId">
+          <End Role="tblAnswer" Type="Self.tblAnswer" Multiplicity="1" />
+          <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuestionAnswer">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tblQuestionAnswer_QuestionId">
+          <End Role="tblQuestion" Type="Self.tblQuestion" Multiplicity="1" />
+          <End Role="tblQuestionAnswer" Type="Self.tblQuestionAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblQuestionAnswer">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SurveyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblAnswers" EntityType="Self.tblAnswer" />
+          <EntitySet Name="tblQuestions" EntityType="Self.tblQuestion" />
+          <EntitySet Name="tblQuestionAnswers" EntityType="Self.tblQuestionAnswer" />
+          <AssociationSet Name="tblQuestionAnswer_AnswerId" Association="Self.tblQuestionAnswer_AnswerId">
+            <End Role="tblAnswer" EntitySet="tblAnswers" />
+            <End Role="tblQuestionAnswer" EntitySet="tblQuestionAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="tblQuestionAnswer_QuestionId" Association="Self.tblQuestionAnswer_QuestionId">
+            <End Role="tblQuestion" EntitySet="tblQuestions" />
+            <End Role="tblQuestionAnswer" EntitySet="tblQuestionAnswers" />
+          </AssociationSet>
+          <EntitySet Name="tblActivations" EntityType="ZJV.SurveyMaker.DBModel.tblActivation" />
+          <EntitySet Name="tblResponses" EntityType="ZJV.SurveyMaker.DBModel.tblResponse" />
+          <AssociationSet Name="Activation_Question" Association="ZJV.SurveyMaker.DBModel.Activation_Question">
+            <End Role="tblQuestion" EntitySet="tblQuestions" />
+            <End Role="tblActivation" EntitySet="tblActivations" />
+          </AssociationSet>
+          <AssociationSet Name="Response_Answer" Association="ZJV.SurveyMaker.DBModel.Response_Answer">
+            <End Role="tblAnswer" EntitySet="tblAnswers" />
+            <End Role="tblResponse" EntitySet="tblResponses" />
+          </AssociationSet>
+          <AssociationSet Name="Response_Question" Association="ZJV.SurveyMaker.DBModel.Response_Question">
+            <End Role="tblQuestion" EntitySet="tblQuestions" />
+            <End Role="tblResponse" EntitySet="tblResponses" />
+          </AssociationSet>
+          <EntitySet Name="C__RefactorLog" EntityType="ZJV.SurveyMaker.DBModel.C__RefactorLog" />
+        </EntityContainer>
+        <EntityType Name="tblActivation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActivationCode" Type="String" Nullable="false" MaxLength="6" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblQuestion" Relationship="ZJV.SurveyMaker.DBModel.Activation_Question" FromRole="tblActivation" ToRole="tblQuestion" />
+        </EntityType>
+        <EntityType Name="tblResponse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <Property Name="AnswerId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="tblAnswer" Relationship="ZJV.SurveyMaker.DBModel.Response_Answer" FromRole="tblResponse" ToRole="tblAnswer" />
+          <NavigationProperty Name="tblQuestion" Relationship="ZJV.SurveyMaker.DBModel.Response_Question" FromRole="tblResponse" ToRole="tblQuestion" />
+          <Property Name="ResponseDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="Activation_Question">
+          <End Type="ZJV.SurveyMaker.DBModel.tblQuestion" Role="tblQuestion" Multiplicity="1" />
+          <End Type="ZJV.SurveyMaker.DBModel.tblActivation" Role="tblActivation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblActivation">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Response_Answer">
+          <End Type="ZJV.SurveyMaker.DBModel.tblAnswer" Role="tblAnswer" Multiplicity="1" />
+          <End Type="ZJV.SurveyMaker.DBModel.tblResponse" Role="tblResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAnswer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblResponse">
+              <PropertyRef Name="AnswerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Response_Question">
+          <End Type="ZJV.SurveyMaker.DBModel.tblQuestion" Role="tblQuestion" Multiplicity="1" />
+          <End Type="ZJV.SurveyMaker.DBModel.tblResponse" Role="tblResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblQuestion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblResponse">
+              <PropertyRef Name="QuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ZJVSurveyMakerDBModelStoreContainer" CdmEntityContainer="SurveyEntities">
+          <EntitySetMapping Name="tblAnswers">
+            <EntityTypeMapping TypeName="ZJV.SurveyMaker.DBModel.tblAnswer">
+              <MappingFragment StoreEntitySet="tblAnswer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuestions">
+            <EntityTypeMapping TypeName="ZJV.SurveyMaker.DBModel.tblQuestion">
+              <MappingFragment StoreEntitySet="tblQuestion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblQuestionAnswers">
+            <EntityTypeMapping TypeName="ZJV.SurveyMaker.DBModel.tblQuestionAnswer">
+              <MappingFragment StoreEntitySet="tblQuestionAnswer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="IsCorrect" ColumnName="IsCorrect" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblActivations">
+            <EntityTypeMapping TypeName="ZJV.SurveyMaker.DBModel.tblActivation">
+              <MappingFragment StoreEntitySet="tblActivation">
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblResponses">
+            <EntityTypeMapping TypeName="ZJV.SurveyMaker.DBModel.tblResponse">
+              <MappingFragment StoreEntitySet="tblResponse">
+                <ScalarProperty Name="ResponseDate" ColumnName="ResponseDate" />
+                <ScalarProperty Name="AnswerId" ColumnName="AnswerId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="ZJV.SurveyMaker.DBModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
